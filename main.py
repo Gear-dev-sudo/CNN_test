@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import models.vgg as vgg
 from torch import nn, optim
 from torch.utils.data import DataLoader
 import copy
@@ -14,9 +15,11 @@ def train(args, model, device, train_loader, criterion, optimizer, epoch):
     # switch to train mode
     model.train()
 
-    for i, (data, target) in enumerate(train_loader):
-        data, target = data.to(device).view(data.size(0),-1), target.to(device)
 
+    for i, (data, target) in enumerate(train_loader):
+        #print(data.shape,target.shape)
+        data, target = data.to(device).view(-1, 3, 32, 32), target.to(device)
+        #print(data.shape,target.shape)
         # compute the output
         output = model(data)
 
@@ -42,7 +45,7 @@ def validate(args, model, device, val_loader, criterion):
     model.eval()
     with torch.no_grad():
         for i, (data, target) in enumerate(val_loader):
-            data, target = data.to(device).view(data.size(0), -1), target.to(device)
+            data, target = data.to(device).view(-1, 3, 32, 32), target.to(device)
 
             # compute the output
             output = model(data)
@@ -89,7 +92,7 @@ def load_data(split, dataset_name, datadir, nchannels):
 
     return dataset
 
-import models.vgg as vgg
+
 # This function trains a fully connected neural net with a singler hidden layer on the given dataset and calculates
 # various measures on the learned network.
 def main():
@@ -118,12 +121,13 @@ def main():
 
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
-    kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
+    print(device)
+    kwargs = {'num_workers': 2, 'pin_memory': True} if use_cuda else {}
     nchannels, nclasses = 3, 10
     if args.dataset == 'MNIST': nchannels = 1
     if args.dataset == 'CIFAR100': nclasses = 100
 
-    model=vgg(3,10)
+    model=vgg.Network(3,10)
     # create an initial model
     model = model.to(device)
 
