@@ -7,14 +7,20 @@ This repository contains the code to train neural nets and compute various measu
 [Behnam Neyshabur](https://www.neyshabur.net), [Zhiyuan Li](https://sites.google.com/site/invariantorli/), [Srinadh Bhojanapalli](http://ttic.uchicago.edu/~srinadh/), [Yann LeCun](http://yann.lecun.com/), [Nathan Srebro](http://www.ttic.edu/srebro)
 
 ## Usage
-1. Install *Python 3.6* and *PyTorch 0.4.1*.
-2. Clone the repository:
+1. Install *Python 3.10* and *PyTorch 2.2.2*.
    ```
-   git clone https://github.com/bneyshabur/over-parametrization.git
+   conda create -n myenv python=3.8
+   conda activate myenv
+   conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia (if use cpu: conda install pytorch torchvision torchaudio cpuonly -c pytorch)
    ```
-3. As a simple example, the following command trains a two layer fully connected feedforward network with 1000 hidden units on *CIFAR10* dataset and then computes several measures/norms on the learned network:
+3. Clone the repository:
    ```
-   python main.py --dataset CIFAR10 --nunits 1000
+   git clone https://github.com/Gear-dev-sudo/CNN_test.git
+   cd CNN_test
+   ```
+4. As a simple example, the following command trains a two layer fully connected feedforward network with 1000 hidden units on *CIFAR10* dataset and then computes several measures/norms on the learned network:
+   ```
+   python main.py --dataset CIFAR10 --epochs 20
    ```
 ## Main Inputs Arguments
 * `--no-cuda`: disables cuda training
