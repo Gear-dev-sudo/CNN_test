@@ -89,7 +89,7 @@ def load_data(split, dataset_name, datadir, nchannels):
 
     return dataset
 
-
+import models.vgg as vgg
 # This function trains a fully connected neural net with a singler hidden layer on the given dataset and calculates
 # various measures on the learned network.
 def main():
@@ -123,8 +123,8 @@ def main():
     if args.dataset == 'MNIST': nchannels = 1
     if args.dataset == 'CIFAR100': nclasses = 100
 
+    model=vgg(3,10)
     # create an initial model
-    model = nn.Sequential(nn.Linear(32 * 32 * nchannels, args.nunits), nn.ReLU(), nn.Linear(args.nunits, nclasses))
     model = model.to(device)
 
     # create a copy of the initial model to be used later
@@ -165,4 +165,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main() 
